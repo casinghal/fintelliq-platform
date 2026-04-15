@@ -1481,7 +1481,7 @@ export default function PlatformPage() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', background: C.bg, fontFamily: F.sans, color: C.text, overflow: 'hidden' }}>
-      {!legalAccepted && <LegalModal onAccept={() => setLegalAccepted(true)} />}
+      {!legalAccepted && <LegalModal onAccept={async () => { await fetch('/api/accept-legal', { method: 'POST' }); setLegalAccepted(true); }} />}
 
       {isMobile ? (
         <>

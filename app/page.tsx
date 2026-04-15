@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: 'Consulting-grade AI prompts, real-world case studies, tool comparisons and weekly fresh content for F&A professionals, consultants and BPO operators. Free access. No signup required.',
   openGraph: {
     title: 'FintelliQ — AI & F&A Knowledge Platform',
-    description: 'The practitioner\'s guide to AI in Finance & Accounting. 80+ consulting prompts, Big Four case studies, and weekly fresh content.',
+    description: 'The practitioner\'s guide to AI in Finance & Accounting. 230+ consulting prompts across 10 industries, Big Four case studies, and weekly fresh content.',
     type: 'website',
     url: 'https://fintelliQ.com',
   },
@@ -28,15 +28,15 @@ const C = {
 const FEATURES = [
   { icon: '🤖', title: 'AI Tools Hub', desc: 'Claude, ChatGPT, Copilot, Grok, Gemini — F&A-specific use cases and copy-paste prompt frameworks for each.' },
   { icon: '🏗️', title: 'Process Tower Library', desc: 'AP, AR, R2R, Tax, Audit, FP&A and more — 10 structured AI prompt templates per function.' },
-  { icon: '⚡', title: 'Prompt Library', desc: '80+ structured prompt frameworks designed as professional starting points. All outputs require practitioner review before use.' },
+  { icon: '⚡', title: 'Prompt Library', desc: '230+ structured prompt frameworks designed as professional starting points, spanning 8 process towers and 10 industries. All outputs require practitioner review before use.' },
   { icon: '📊', title: 'Real-World Case Studies', desc: 'Published results from Deloitte, EY, PwC and KPMG — with source disclosures. FintelliQ is not affiliated with any of these firms.' },
   { icon: '🔄', title: 'Auto-Refreshing Content', desc: 'Our AI engine scans 20+ publications and YouTube daily. Fresh content every week — old content rotates out.' },
   { icon: '🔍', title: 'Live Discovery Feed', desc: 'AI-curated articles, videos and reports on AI in F&A — scored for relevance and published weekly.' },
 ];
 
 const STATS = [
-  { v: '80+', l: 'AI prompt frameworks' },
-  { v: '5', l: 'AI tools covered' },
+  { v: '230+', l: 'AI prompt frameworks' },
+  { v: '10', l: 'Industries covered' },
   { v: '8', l: 'Process towers' },
   { v: 'Weekly', l: 'Content refresh' },
 ];

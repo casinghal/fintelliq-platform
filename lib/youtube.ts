@@ -1,4 +1,9 @@
-const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY!;
+const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY || '';
+
+// Graceful skip if key not configured
+if (!YOUTUBE_API_KEY) {
+  console.warn('YOUTUBE_API_KEY not set — YouTube ingestion disabled');
+}
 
 const KEYWORDS = [
   'AI in accounting 2025',
@@ -32,6 +37,7 @@ type YouTubeItem = {
 };
 
 export async function fetchYouTubeContent(): Promise<YouTubeItem[]> {
+  if (!YOUTUBE_API_KEY) return []; // Skip gracefully if key not configured
   const results: YouTubeItem[] = [];
   const seen = new Set<string>();
 

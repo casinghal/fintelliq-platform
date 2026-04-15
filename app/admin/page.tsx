@@ -261,7 +261,7 @@ export default function AdminDashboard() {
                 Clicking "Run now" triggers the full ingestion pipeline: YouTube API (8 keyword queries) + 20 RSS feeds → Claude scoring → items above 6.5 score appear in your Review Queue.
               </div>
               <div style={{ fontSize: 12, color: C.t3, marginTop: 8, lineHeight: 1.6 }}>
-                This runs automatically every day at 06:00 UTC via Vercel Cron. Use "Run now" to manually trigger a fresh fetch at any time.
+                This runs automatically every day at 06:00 UTC via Netlify Scheduled Function. Use "Run now" to manually trigger a fresh fetch at any time.
               </div>
             </div>
             <button onClick={runCron} disabled={cronLoading}
