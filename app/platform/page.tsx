@@ -61,7 +61,7 @@ function CopyBtn({ text }: { text: string }) {
   };
   return (
     <button onClick={copy} style={{ fontSize: 12, padding: '7px 14px', borderRadius: 7, border: `1px solid ${copied ? C.acbor : C.border}`, background: copied ? C.acdim : 'transparent', color: copied ? C.accent : C.t2, cursor: 'pointer', fontFamily: F.sans, transition: 'all 0.2s', flexShrink: 0, minHeight: 36 }}>
-      {copied ? '✓ Copied' : 'Copy prompt'}
+      {copied ? '✓ Ready for Claude' : 'Copy for Claude'}
     </button>
   );
 }
@@ -95,8 +95,8 @@ function NextSection({ currentId, onNavigate }: { currentId: string; onNavigate:
 
 function DisclaimerBanner() {
   return (
-    <div style={{ background: '#0a0b0f', borderTop: `1px solid ${C.border}`, padding: '10px 20px', fontSize: 10, color: C.t3, lineHeight: 1.7, flexShrink: 0 }}>
-      <strong style={{ color: '#4a4e5a' }}>Legal notice:</strong> Raysho is an independent educational platform. Not affiliated with or endorsed by Deloitte, EY, PwC, KPMG, McKinsey, Anthropic, OpenAI, Microsoft, Google, or xAI. All trademarks belong to their respective owners. Content is for educational purposes only — not professional advice. No specific learning outcome is guaranteed.
+    <div style={{ background: C.surface, borderTop: `1px solid ${C.border}`, padding: '10px 20px', fontSize: 10, color: C.t3, lineHeight: 1.7, flexShrink: 0 }}>
+      <strong style={{ color: C.t2 }}>Legal notice:</strong> Raysho is an independent educational platform. Not affiliated with or endorsed by Deloitte, EY, PwC, KPMG, McKinsey, Anthropic, OpenAI, Microsoft, Google, or xAI. All trademarks belong to their respective owners. Content is for educational purposes only — not professional advice. No specific learning outcome is guaranteed.
     </div>
   );
 }
@@ -391,7 +391,7 @@ function ToolsHub({ onNavigate }: { onNavigate: (id: string) => void }) {
                           ))}
                         </div>
                       </div>
-                      <div style={{ marginTop: 12, fontSize: 11, color: '#4a4e5a', background: '#0a0b0e', border: `1px solid ${C.border}`, borderRadius: 6, padding: '8px 12px', lineHeight: 1.6 }}><strong style={{ color: C.t3 }}>Note:</strong> {LEGAL.promptDisclaimer}</div>
+                      <div style={{ marginTop: 12, fontSize: 11, color: C.t2, background: '#0a0b0e', border: `1px solid ${C.border}`, borderRadius: 6, padding: '8px 12px', lineHeight: 1.6 }}><strong style={{ color: C.t3 }}>Note:</strong> {LEGAL.promptDisclaimer}</div>
                     </div>
                   )}
                 </div>
@@ -1093,12 +1093,12 @@ function IndustryPrompts({ onNavigate }: { onNavigate: (id: string) => void }) {
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 10 }}>
         <button onClick={() => copyPrompt(openPrompt!.prompt)}
           style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', borderRadius: 7, border: `1px solid ${copied ? C.acbor : C.border}`, background: copied ? C.acdim : C.surface, color: copied ? C.accent : C.t2, fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: F.sans, transition: 'all 0.15s' }}>
-          {copied ? '✓ Copied!' : '⎘ Copy full prompt'}
+          {copied ? '✓ Ready for Claude' : 'Copy for Claude'}
         </button>
       </div>
 
       {/* Prompt text */}
-      <pre style={{ margin: 0, padding: isMobile ? '14px' : '18px 20px', background: '#07080c', border: `1px solid ${C.border}`, borderRadius: 10, fontSize: isMobile ? 11 : 12, color: C.t2, lineHeight: 1.8, whiteSpace: 'pre-wrap', fontFamily: "'JetBrains Mono',monospace", overflowX: 'auto' }}>
+      <pre style={{ margin: 0, padding: isMobile ? '14px' : '18px 20px', background: C.card2, border: `1px solid ${C.border}`, borderLeft: `3px solid ${C.acbor}`, borderRadius: 10, fontSize: isMobile ? 11 : 12, color: C.text, lineHeight: 1.8, whiteSpace: 'pre-wrap', fontFamily: "'JetBrains Mono',monospace", overflowX: 'auto' }}>
         {openPrompt!.prompt}
       </pre>
     </div>
