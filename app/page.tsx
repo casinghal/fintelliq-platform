@@ -1,332 +1,215 @@
-// Server Component — no 'use client' directive
-// Full redesign: SKILL_30 v2.0 Emotional Design Architecture
+// Server Component — dark-first, glass + liquid + neubrutalism
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 export const metadata: Metadata = {
-  title: 'Raysho — AI & F&A Knowledge Platform for Finance Professionals',
-  description: 'Claude-optimised AI prompts for Finance and Accounting professionals. 230 structured frameworks, 8 process towers, 10 industries. Daily AI briefings scored for F&A relevance.',
+  title: 'Raysho — AI Knowledge Platform for F&A Professionals',
+  description: 'Stop guessing with AI. 230 Claude-optimised prompt frameworks, 8 process towers, and daily AI briefings built for Finance and Accounting professionals.',
   openGraph: {
     title: 'Raysho — AI & F&A Knowledge Platform',
-    description: "Stop guessing with AI. Get Claude-optimised prompt frameworks built for F&A practitioners.",
+    description: 'Claude-optimised prompts for CPAs, CFOs, controllers and F&A teams. Daily AI briefings scored for relevance.',
     type: 'website',
     url: 'https://raysho.ai',
   },
-  alternates: {
-    canonical: 'https://raysho.ai',
-  },
+  alternates: { canonical: 'https://raysho.ai' },
 };
 
-// ── Design tokens (landing page uses CSS vars directly via inline styles)
+// ── inline CSS vars ──────────────────────────────────────────
 const T = {
-  bg:        'var(--bg-primary)',
-  surface:   'var(--bg-secondary)',
-  card:      'var(--bg-card)',
-  border:    'var(--border-default)',
-  borderStr: 'var(--border-strong)',
-  accent:    'var(--accent-primary)',
-  acSubtle:  'var(--accent-primary-subtle)',
-  acMuted:   'var(--accent-primary-muted)',
-  acBorder:  'var(--border-ai)',
-  gold:      'var(--accent-secondary)',
-  goldSub:   'var(--accent-secondary-subtle)',
-  text:      'var(--text-primary)',
-  t2:        'var(--text-secondary)',
-  t3:        'var(--text-tertiary)',
+  accent:    'var(--accent)',
+  acDim:     'var(--accent-dim)',
+  acBorder:  'var(--accent-border)',
+  acGlow:    'var(--accent-glow)',
+  gold:      'var(--gold)',
+  goldDim:   'var(--gold-dim)',
+  goldBdr:   'var(--gold-border)',
+  text1:     'var(--text-1)',
+  text2:     'var(--text-2)',
+  text3:     'var(--text-3)',
   textAI:    'var(--text-ai)',
-  shadow:    'var(--shadow-card)',
-  shadowHov: 'var(--shadow-card-hover)',
+  bg:        'var(--bg-base)',
+  raised:    'var(--bg-raised)',
+  elevated:  'var(--bg-elevated)',
+  glassBg:   'var(--glass-bg)',
+  glassBdr:  'var(--glass-border)',
+  glassBdrHi:'var(--glass-border-hi)',
+  brutal:    'var(--brutal-border)',
   display:   'var(--font-display)',
   body:      'var(--font-body)',
   mono:      'var(--font-mono)',
+  serif:     'var(--font-serif)',
 };
-
-// ── Six pillars — bento grid data
-const PILLARS = [
-  {
-    id: 'tools',
-    wide: false,
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
-      </svg>
-    ),
-    label: 'AI Tools Hub',
-    desc: 'Claude, ChatGPT, Copilot — F&A-specific use cases and frameworks for each tool.',
-    href: '/platform',
-    color: T.accent,
-  },
-  {
-    id: 'towers',
-    wide: true,
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
-      </svg>
-    ),
-    label: 'Process Towers',
-    desc: 'AP, AR, R2R, Tax, Audit, FP&A, Payroll, Treasury — 10 Claude-optimised prompts per function. Built for how F&A work actually gets done.',
-    href: '/platform',
-    color: T.accent,
-    stat: '80 prompts across 8 towers',
-  },
-  {
-    id: 'prompts',
-    wide: true,
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
-      </svg>
-    ),
-    label: 'Industry Prompts',
-    desc: '150 deep-analysis prompts across 10 sectors. Each averages 17,000 characters of structured framework — the most specific F&A prompt library available.',
-    href: '/platform',
-    color: T.accent,
-    stat: '150 prompts, 10 industries',
-  },
-  {
-    id: 'cases',
-    wide: false,
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-      </svg>
-    ),
-    label: 'Case Studies',
-    desc: 'Published Big Four results — cited, sourced, and honest.',
-    href: '/platform',
-    color: T.accent,
-  },
-  {
-    id: 'discovery',
-    wide: false,
-    icon: null,
-    label: 'Live Discovery',
-    desc: "Today's F&A AI developments — scored by Claude for relevance.",
-    href: '/platform',
-    color: T.accent,
-    live: true,
-  },
-  {
-    id: 'lab',
-    wide: false,
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v11m0 0H5a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2h-4m-6 0h6"/>
-      </svg>
-    ),
-    label: 'Automation Lab',
-    desc: 'Automation ideas across F&A towers. More launching weekly.',
-    href: '/platform',
-    color: T.accent,
-  },
-];
 
 const SAMPLE_PROMPT = `BANK RECONCILIATION VARIANCE ANALYSIS
 
-You are a senior finance professional conducting a month-end bank reconciliation review. Analyse the following reconciliation data and produce:
+You are a senior finance professional conducting month-end
+bank reconciliation review. Analyse the following data:
 
 1. VARIANCE IDENTIFICATION
-   — List all unreconciled items above materiality threshold
-   — Classify each: timing difference / error / missing entry / unknown
+   — Unreconciled items above materiality threshold
+   — Classify: timing / error / missing entry / unknown
 
 2. RISK ASSESSMENT
    — Flag items outstanding > 30 days
-   — Identify any patterns suggesting systematic error
+   — Patterns suggesting systematic error
 
 3. CORRECTIVE ACTIONS
    — Journal entry recommendations with account codes
-   — Escalation items requiring controller sign-off
+   — Items requiring controller sign-off
 
-Input your reconciliation data below:`;
+Paste your reconciliation data below:`;
 
-const WHO = [
-  'CPAs and Accounting Firms',
-  'CFOs and Controllers',
-  'FP&A Analysts',
-  'AP and AR Managers',
-  'Hotel Finance Teams',
-  'Internal Auditors',
-  'Tax Professionals',
-  'BPO and GDS Operators',
+const PILLARS = [
+  { n:'01', label:'AI Tools Hub',       desc:'Claude, ChatGPT, Copilot, Grok — F&A-specific use cases for each tool.', style:'glass' },
+  { n:'02', label:'Process Towers',     desc:'80 prompts across AP, AR, R2R, Tax, Audit, FP&A, Payroll, Treasury.', wide:true, style:'hybrid', stat:'8 towers · 10 prompts each' },
+  { n:'03', label:'Industry Prompts',   desc:'150 deep-analysis frameworks across 10 sectors. Avg 17,000 chars each — the most specific F&A prompt library available.', wide:true, style:'brutal', stat:'150 prompts · 10 industries' },
+  { n:'04', label:'Case Studies',       desc:'Published Big Four results — cited, sourced, no affiliation claimed.', style:'glass' },
+  { n:'05', label:'Live Discovery',     desc:"Today's F&A AI briefings — scored by Claude for relevance.", style:'hybrid', live:true },
+  { n:'06', label:'Automation Lab',     desc:'Automation ideas across F&A towers. More launching weekly.', style:'glass' },
 ];
 
+const WHO = ['CPAs and Accounting Firms','CFOs and Controllers','FP&A Analysts','AP and AR Managers','Hotel Finance Teams','Internal Auditors','Tax Professionals','BPO and GDS Operators'];
+
 const STATS = [
-  { v: '230', l: 'Claude-optimised prompts' },
-  { v: '8',   l: 'Process towers' },
-  { v: '10',  l: 'Industries covered' },
-  { v: 'Daily', l: 'AI content briefings' },
+  { v:'230', l:'Claude-optimised prompts' },
+  { v:'8',   l:'Process towers' },
+  { v:'10',  l:'Industries covered' },
+  { v:'Daily', l:'AI content briefings' },
+];
+
+const PROOF = [
+  { stat:'98%',   body:'of accounting firms now use AI in some form', src:'Karbon 2026 — 600 firms across 6 continents' },
+  { stat:'35%',   body:'average reduction in close cycle time with structured AI workflows', src:'Deloitte CFO Survey 2026' },
+  { stat:'82%',   body:'of CPA firms use ChatGPT — most get inconsistent results without structured prompts', src:"Future Firm 2025" },
 ];
 
 export default function LandingPage() {
   return (
-    <div style={{ background: T.bg, minHeight: '100vh', fontFamily: T.body, color: T.text }}>
+    <div style={{ background: T.bg, minHeight:'100vh', fontFamily: T.body, color: T.text1 }}>
 
-      {/* ── NAVIGATION ─────────────────────────────────────────── */}
+      {/* ── NAV — Liquid Glass ─────────────────────────────── */}
       <nav className="raysho-nav">
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 60 }}>
+        <div style={{ maxWidth:1280, margin:'0 auto', padding:'0 24px', display:'flex', alignItems:'center', justifyContent:'space-between', height:60, gap:16 }}>
 
           {/* Logo */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div style={{ width: 30, height: 30, borderRadius: 8, background: T.accent, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <div style={{ display:'flex', alignItems:'center', gap:9, flexShrink:0 }}>
+            <div style={{ width:30, height:30, borderRadius:6, background:T.accent, display:'flex', alignItems:'center', justifyContent:'center', boxShadow:`0 0 12px ${T.acGlow}` }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-inv)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
               </svg>
             </div>
-            <span style={{ fontFamily: T.display, fontSize: 16, fontWeight: 700, letterSpacing: '-0.02em', color: T.text }}>Raysho</span>
+            <span style={{ fontFamily:T.display, fontSize:15, fontWeight:800, letterSpacing:'-0.03em', color:T.text1 }}>Raysho</span>
           </div>
 
-          {/* Nav links — desktop */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
-            <a href="#pillars" style={{ fontSize: 14, color: T.t2, fontFamily: T.body, fontWeight: 500 }}>Platform</a>
-            <a href="#sample" style={{ fontSize: 14, color: T.t2, fontFamily: T.body, fontWeight: 500 }}>See a prompt</a>
-            <a href="#who" style={{ fontSize: 14, color: T.t2, fontFamily: T.body, fontWeight: 500 }}>Who it&apos;s for</a>
+          {/* Nav links */}
+          <div style={{ display:'flex', alignItems:'center', gap:28, flex:1, justifyContent:'center' }}>
+            {[['#pillars','Platform'],['#sample','See a prompt'],['#who',"Who it's for"]].map(([href,lbl]) => (
+              <a key={href} href={href} style={{ fontFamily:T.mono, fontSize:11, fontWeight:500, letterSpacing:'0.06em', textTransform:'uppercase', color:T.text3, transition:'color 130ms' }}>
+                {lbl}
+              </a>
+            ))}
           </div>
 
-          {/* CTA */}
-          <Link
-            href="/platform"
-            style={{ padding: '9px 20px', borderRadius: 6, background: T.accent, color: '#fff', fontSize: 14, fontWeight: 600, fontFamily: T.body, display: 'inline-flex', alignItems: 'center', gap: 6 }}
-          >
-            Open Platform →
-          </Link>
+          {/* Right side */}
+          <div style={{ display:'flex', alignItems:'center', gap:10, flexShrink:0 }}>
+            <ThemeToggle />
+            <Link href="/platform" className="btn-primary" style={{ fontSize:13, padding:'8px 18px' }}>
+              Open Platform →
+            </Link>
+          </div>
         </div>
       </nav>
 
-      {/* ── HERO ────────────────────────────────────────────────── */}
-      {/* Signal 1: aurora sits behind content as position:relative wrapper */}
-      <section style={{ position: 'relative', overflow: 'hidden', maxWidth: '100%' }}>
+      {/* ── HERO ───────────────────────────────────────────── */}
+      <section style={{ position:'relative', overflow:'hidden' }}>
         <div className="hero-aurora" aria-hidden="true" />
-        <div className="hero-content" style={{ maxWidth: 1280, margin: '0 auto', padding: '88px 24px 72px', textAlign: 'center' }}>
+        <div className="hero-content" style={{ maxWidth:1280, margin:'0 auto', padding:'96px 24px 80px', textAlign:'center' }}>
 
-          {/* Eyebrow */}
-          <p style={{
-            display: 'inline-block',
-            fontFamily: T.body,
-            fontSize: 11,
-            fontWeight: 500,
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase',
-            color: T.textAI,
-            background: T.acSubtle,
-            border: `1px solid ${T.acBorder}`,
-            borderRadius: 999,
-            padding: '4px 14px',
-            marginBottom: 28,
-          }}>
-            The F&amp;A Professional&apos;s Guide to AI
-          </p>
+          {/* Eyebrow — mono brutal label */}
+          <div style={{ display:'inline-flex', alignItems:'center', gap:8, fontFamily:T.mono, fontSize:10, fontWeight:500, letterSpacing:'0.12em', textTransform:'uppercase', color:T.textAI, background:T.acDim, border:`1px solid ${T.acBorder}`, borderRadius:3, padding:'4px 14px', marginBottom:32 }}>
+            <span className="live-dot" />
+            The F&A Professional's Guide to AI
+          </div>
 
           {/* Headline */}
-          <h1 style={{
-            fontFamily: T.display,
-            fontSize: 'clamp(32px, 5.5vw, 56px)',
-            fontWeight: 800,
-            lineHeight: 1.1,
-            letterSpacing: '-0.025em',
-            color: T.text,
-            marginBottom: 24,
-            maxWidth: 800,
-            margin: '0 auto 24px',
-          }}>
-            Stop guessing with AI.<br />
-            Start using it like a professional.
+          <h1 style={{ fontFamily:T.display, fontSize:'clamp(34px,6vw,62px)', fontWeight:800, lineHeight:1.05, letterSpacing:'-0.03em', color:T.text1, marginBottom:24, maxWidth:860, margin:'0 auto 24px' }}>
+            Stop guessing with AI.<br/>
+            <span style={{ color:T.accent }}>Start using it like a professional.</span>
           </h1>
 
-          {/* Subheadline */}
-          <p style={{
-            fontFamily: T.body,
-            fontSize: 'clamp(15px, 2vw, 18px)',
-            color: T.t2,
-            lineHeight: 1.7,
-            maxWidth: 580,
-            margin: '0 auto 40px',
-          }}>
+          {/* Sub */}
+          <p style={{ fontFamily:T.body, fontSize:'clamp(15px,2vw,18px)', color:T.text2, lineHeight:1.75, maxWidth:560, margin:'0 auto 44px' }}>
             230 Claude-optimised prompt frameworks, 8 process towers, and daily AI briefings
-            scored for F&amp;A relevance. Built for practitioners, not generalists.
+            scored for F&A relevance. Built by practitioners, for practitioners.
           </p>
 
           {/* CTAs */}
-          <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 56 }}>
-            <Link
-              href="/platform"
-              style={{ padding: '14px 32px', borderRadius: 6, background: T.accent, color: '#fff', fontSize: 15, fontWeight: 600, fontFamily: T.body, display: 'inline-flex', alignItems: 'center', gap: 8 }}
-            >
+          <div style={{ display:'flex', gap:12, justifyContent:'center', flexWrap:'wrap', marginBottom:64 }}>
+            <Link href="/platform" className="btn-primary" style={{ fontSize:15, padding:'12px 28px' }}>
               Start with your function →
             </Link>
-            <a
-              href="#sample"
-              style={{ padding: '14px 24px', borderRadius: 6, border: `1px solid ${T.borderStr}`, color: T.t2, fontSize: 15, fontWeight: 500, fontFamily: T.body, display: 'inline-flex', alignItems: 'center' }}
-            >
+            <a href="#sample" className="btn-ghost" style={{ fontSize:15, padding:'12px 28px' }}>
               See what Claude-optimised means
             </a>
           </div>
 
-          {/* Stats bar */}
-          <div style={{ display: 'flex', justifyContent: 'center', gap: 40, flexWrap: 'wrap' }}>
+          {/* Stats — glass cards */}
+          <div style={{ display:'flex', justifyContent:'center', gap:10, flexWrap:'wrap', maxWidth:720, margin:'0 auto' }}>
             {STATS.map(s => (
-              <div key={s.l} style={{ textAlign: 'center' }}>
-                <div style={{ fontFamily: T.display, fontSize: 26, fontWeight: 700, color: T.accent, letterSpacing: '-0.02em', lineHeight: 1 }}>{s.v}</div>
-                <div style={{ fontFamily: T.body, fontSize: 12, color: T.t3, marginTop: 4 }}>{s.l}</div>
+              <div key={s.l} className="glass-card" style={{ padding:'16px 28px', textAlign:'center', minWidth:140 }}>
+                <div style={{ fontFamily:T.display, fontSize:28, fontWeight:800, letterSpacing:'-0.03em', color:T.accent, lineHeight:1 }}>{s.v}</div>
+                <div style={{ fontFamily:T.mono, fontSize:10, letterSpacing:'0.08em', textTransform:'uppercase', color:T.text3, marginTop:6 }}>{s.l}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── SIX PILLARS BENTO ───────────────────────────────────── */}
-      <section id="pillars" style={{ maxWidth: 1280, margin: '0 auto', padding: '72px 24px' }}>
+      {/* ── SECTION RULE ───────────────────────────────────── */}
+      <hr className="section-rule" />
 
-        {/* Section label */}
-        <p style={{ fontFamily: T.body, fontSize: 11, fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', color: T.t3, marginBottom: 12, textAlign: 'center' }}>
-          EVERYTHING YOU NEED TO WORK WITH AI IN FINANCE
-        </p>
-        <h2 style={{ fontFamily: T.display, fontSize: 'clamp(24px, 3vw, 32px)', fontWeight: 700, letterSpacing: '-0.02em', color: T.text, textAlign: 'center', marginBottom: 40 }}>
+      {/* ── SIX PILLARS BENTO ──────────────────────────────── */}
+      <section id="pillars" style={{ maxWidth:1280, margin:'0 auto', padding:'72px 24px' }}>
+
+        {/* Label */}
+        <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:32 }}>
+          <span className="section-label accent">Platform</span>
+          <div style={{ flex:1, height:1, background:T.glassBdrHi }} />
+        </div>
+        <h2 style={{ fontFamily:T.display, fontSize:'clamp(24px,3vw,36px)', fontWeight:800, letterSpacing:'-0.025em', color:T.text1, marginBottom:40, maxWidth:600 }}>
           Six pillars. One daily-use platform.
         </h2>
 
         {/* Bento grid */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: 14,
-        }}>
+        <div className="bento-grid">
           {PILLARS.map(p => (
             <Link
-              key={p.id}
-              href={p.href}
-              className="bento-cell"
-              style={{
-                gridColumn: p.wide ? 'span 2' : 'span 1',
-                padding: p.wide ? '28px 32px' : '24px 24px',
-              }}
+              key={p.n}
+              href="/platform"
+              className={`bento-cell ${p.style === 'glass' ? 'glass-card' : p.style === 'brutal' ? 'brutal-card' : 'hybrid-card'}`}
+              style={{ gridColumn: p.wide ? 'span 2' : 'span 1', padding: p.wide ? '28px 28px' : '22px 22px' }}
             >
-              {/* Icon or live badge */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div style={{ width: 36, height: 36, borderRadius: 8, background: T.acSubtle, display: 'flex', alignItems: 'center', justifyContent: 'center', color: T.accent }}>
-                  {p.live ? (
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/>
-                    </svg>
-                  ) : p.icon}
-                </div>
+              {/* Number label */}
+              <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+                <span style={{ fontFamily:T.mono, fontSize:10, fontWeight:600, letterSpacing:'0.10em', color:T.accent }}>{p.n}</span>
                 {p.live && (
-                  <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontFamily: T.body, fontSize: 11, fontWeight: 500, color: T.textAI }}>
-                    <span className="live-indicator" />
-                    LIVE
+                  <span style={{ display:'flex', alignItems:'center', gap:6, fontFamily:T.mono, fontSize:10, letterSpacing:'0.08em', textTransform:'uppercase', color:T.textAI }}>
+                    <span className="live-dot" style={{ width:5, height:5 }} />
+                    Live
                   </span>
                 )}
               </div>
 
               {/* Title */}
               <div>
-                <div style={{ fontFamily: T.display, fontSize: 15, fontWeight: 600, color: T.text, marginBottom: 6 }}>{p.label}</div>
-                <div style={{ fontFamily: T.body, fontSize: 13, color: T.t2, lineHeight: 1.6 }}>{p.desc}</div>
+                <div style={{ fontFamily:T.display, fontSize:15, fontWeight:700, color:T.text1, marginBottom:6, letterSpacing:'-0.01em' }}>{p.label}</div>
+                <div style={{ fontFamily:T.body, fontSize:13, color:T.text2, lineHeight:1.65 }}>{p.desc}</div>
               </div>
 
-              {/* Stat if present */}
+              {/* Stat */}
               {p.stat && (
-                <div style={{ fontFamily: T.body, fontSize: 11, fontWeight: 500, color: T.textAI, letterSpacing: '0.04em' }}>
+                <div style={{ fontFamily:T.mono, fontSize:10, fontWeight:500, letterSpacing:'0.06em', color:T.textAI, textTransform:'uppercase' }}>
                   {p.stat}
                 </div>
               )}
@@ -335,131 +218,155 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── SAMPLE PROMPT (Intelligence Signal demo) ────────────── */}
-      <section id="sample" style={{ background: T.surface, borderTop: `1px solid ${T.border}`, borderBottom: `1px solid ${T.border}` }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '72px 24px' }}>
+      <hr className="section-rule" />
 
-          <p style={{ fontFamily: T.body, fontSize: 11, fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', color: T.t3, marginBottom: 12, textAlign: 'center' }}>
-            SEE WHAT CLAUDE-OPTIMISED MEANS
-          </p>
-          <h2 style={{ fontFamily: T.display, fontSize: 'clamp(22px, 2.5vw, 28px)', fontWeight: 700, letterSpacing: '-0.02em', color: T.text, textAlign: 'center', marginBottom: 8 }}>
-            Not a generic prompt. A structured professional framework.
-          </h2>
-          <p style={{ fontFamily: T.body, fontSize: 14, color: T.t2, textAlign: 'center', marginBottom: 40, maxWidth: 520, margin: '0 auto 40px' }}>
-            Every prompt includes numbered usage steps, specific data constructs, and a disclaimer that results may vary on other AI tools.
-          </p>
+      {/* ── SAMPLE PROMPT — Brutal editorial ───────────────── */}
+      <section id="sample" style={{ maxWidth:1280, margin:'0 auto', padding:'72px 24px' }}>
 
-          {/* Badge row */}
-          <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginBottom: 20, flexWrap: 'wrap' }}>
-            <span className="badge-free">FREE</span>
-            <span className="badge-claude">Claude-optimised</span>
-            <span style={{ fontFamily: T.body, fontSize: 11, padding: '2px 8px', borderRadius: 999, background: T.surface, border: `1px solid ${T.border}`, color: T.t3 }}>
-              AP Tower
-            </span>
-            <span style={{ fontFamily: T.body, fontSize: 11, padding: '2px 8px', borderRadius: 999, background: T.surface, border: `1px solid ${T.border}`, color: T.t3 }}>
-              Beginner
-            </span>
-          </div>
+        <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:32 }}>
+          <span className="section-label accent">What Claude-optimised means</span>
+          <div style={{ flex:1, height:1, background:T.glassBdrHi }} />
+        </div>
 
-          {/* Prompt block */}
-          <div style={{ maxWidth: 760, margin: '0 auto', position: 'relative' }}>
-            <div className="prompt-block">
-              <div className="copy-btn">Copy for Claude</div>
-              {SAMPLE_PROMPT}
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:40, alignItems:'start' }}>
+
+          {/* Left — editorial text */}
+          <div>
+            <h2 style={{ fontFamily:T.display, fontSize:'clamp(22px,2.8vw,32px)', fontWeight:800, letterSpacing:'-0.025em', color:T.text1, marginBottom:16, lineHeight:1.2 }}>
+              Not a generic prompt.<br/>A structured professional framework.
+            </h2>
+            <p style={{ fontFamily:T.body, fontSize:15, color:T.text2, lineHeight:1.8, marginBottom:24 }}>
+              Generic AI prompts return generic output. Every Raysho prompt is engineered
+              specifically for its task — with numbered steps, required data constructs,
+              and role-framing that tells Claude it's working with a senior finance professional.
+            </p>
+            <p style={{ fontFamily:T.serif, fontStyle:'italic', fontSize:14, color:T.text3, lineHeight:1.8, borderLeft:`2px solid ${T.acBorder}`, paddingLeft:16, marginBottom:28 }}>
+              "The difference between a prompt that works and one that doesn't
+              is usually the difference between a practitioner writing it
+              and a generalist guessing."
+            </p>
+
+            {/* Badge row */}
+            <div style={{ display:'flex', gap:8, flexWrap:'wrap', marginBottom:28 }}>
+              <span className="badge-free">Free</span>
+              <span className="badge-claude">Claude-optimised</span>
+              <span className="badge-new">AP Tower</span>
             </div>
-          </div>
 
-          <p style={{ fontFamily: T.body, fontSize: 12, color: T.t3, textAlign: 'center', marginTop: 16, fontStyle: 'italic' }}>
-            Results require review by a qualified professional before use in any client or regulated context.
-          </p>
-
-          <div style={{ textAlign: 'center', marginTop: 32 }}>
-            <Link
-              href="/platform"
-              style={{ padding: '12px 28px', borderRadius: 6, background: T.accent, color: '#fff', fontSize: 14, fontWeight: 600, fontFamily: T.body, display: 'inline-flex', alignItems: 'center', gap: 6 }}
-            >
+            <Link href="/platform" className="btn-primary">
               Explore all 230 prompts →
             </Link>
           </div>
-        </div>
-      </section>
 
-      {/* ── WHO IT&apos;S FOR ─────────────────────────────────────── */}
-      <section id="who" style={{ maxWidth: 1280, margin: '0 auto', padding: '72px 24px' }}>
-        <p style={{ fontFamily: T.body, fontSize: 11, fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', color: T.t3, marginBottom: 12, textAlign: 'center' }}>
-          BUILT FOR F&amp;A PRACTITIONERS
+          {/* Right — prompt block */}
+          <div className="prompt-block" style={{ fontSize:12, lineHeight:1.85 }}>
+            <div className="copy-btn">Copy for Claude</div>
+            {SAMPLE_PROMPT}
+          </div>
+        </div>
+
+        <p style={{ fontFamily:T.mono, fontSize:10, letterSpacing:'0.06em', color:T.text3, marginTop:16, textTransform:'uppercase' }}>
+          ⚠ Outputs require review by a qualified professional before use in any client or regulated context
         </p>
-        <h2 style={{ fontFamily: T.display, fontSize: 'clamp(22px, 2.5vw, 28px)', fontWeight: 700, letterSpacing: '-0.02em', color: T.text, textAlign: 'center', marginBottom: 40 }}>
-          If Finance and Accounting is your work, this is your platform.
-        </h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 10 }}>
-          {WHO.map(role => (
-            <div key={role} style={{ padding: '14px 18px', background: T.card, border: `1px solid ${T.border}`, borderRadius: 10, display: 'flex', alignItems: 'center', gap: 10, boxShadow: T.shadow }}>
-              <div style={{ width: 6, height: 6, borderRadius: '50%', background: T.accent, flexShrink: 0 }} />
-              <span style={{ fontFamily: T.body, fontSize: 13, color: T.t2 }}>{role}</span>
-            </div>
-          ))}
-        </div>
       </section>
 
-      {/* ── PROOF SECTION ───────────────────────────────────────── */}
-      <section style={{ background: T.surface, borderTop: `1px solid ${T.border}`, borderBottom: `1px solid ${T.border}` }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '72px 24px' }}>
-          <p style={{ fontFamily: T.body, fontSize: 11, fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', color: T.t3, marginBottom: 12, textAlign: 'center' }}>
-            WHAT THE PROFESSION HAS FOUND
-          </p>
-          <h2 style={{ fontFamily: T.display, fontSize: 'clamp(22px, 2.5vw, 28px)', fontWeight: 700, letterSpacing: '-0.02em', color: T.text, textAlign: 'center', marginBottom: 40 }}>
+      <hr className="section-rule" />
+
+      {/* ── PROOF — editorial layout ────────────────────────── */}
+      <section style={{ background:T.raised, borderTop:`1px solid ${T.glassBdr}`, borderBottom:`1px solid ${T.glassBdr}` }}>
+        <div style={{ maxWidth:1280, margin:'0 auto', padding:'72px 24px' }}>
+
+          <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:32 }}>
+            <span className="section-label">What the profession has found</span>
+            <div style={{ flex:1, height:1, background:T.glassBdrHi }} />
+          </div>
+
+          <h2 style={{ fontFamily:T.display, fontSize:'clamp(22px,2.8vw,32px)', fontWeight:800, letterSpacing:'-0.025em', color:T.text1, marginBottom:40, maxWidth:640 }}>
             Finance functions that adopted structured AI workflows are operating differently.
           </h2>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16, maxWidth: 900, margin: '0 auto' }}>
-            {[
-              { stat: '98%', claim: 'of accounting firms now use AI in some form', source: "Karbon's 2026 survey of 600 firms across 6 continents" },
-              { stat: '35%', claim: 'average reduction in close cycle time with structured AI workflows', source: 'Deloitte CFO Survey 2026' },
-              { stat: '82%', claim: 'of CPA firms use ChatGPT — but most get inconsistent results without structured prompts', source: "Future Firm's 2025 survey" },
-            ].map(p => (
-              <div key={p.stat} style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 12, padding: '24px 24px', boxShadow: T.shadow }}>
-                <div style={{ fontFamily: T.display, fontSize: 36, fontWeight: 800, color: T.accent, letterSpacing: '-0.03em', lineHeight: 1, marginBottom: 8 }}>{p.stat}</div>
-                <div style={{ fontFamily: T.body, fontSize: 14, color: T.text, lineHeight: 1.6, marginBottom: 10 }}>{p.claim}</div>
-                <div style={{ fontFamily: T.body, fontSize: 11, color: T.t3, lineHeight: 1.5, fontStyle: 'italic' }}>Source: {p.source}</div>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(260px,1fr))', gap:12 }}>
+            {PROOF.map(p => (
+              <div key={p.stat} className="hybrid-card" style={{ padding:'24px' }}>
+                <div style={{ fontFamily:T.display, fontSize:42, fontWeight:800, color:T.accent, letterSpacing:'-0.04em', lineHeight:1, marginBottom:10 }}>{p.stat}</div>
+                <div style={{ fontFamily:T.body, fontSize:14, color:T.text1, lineHeight:1.65, marginBottom:10 }}>{p.body}</div>
+                <div style={{ fontFamily:T.mono, fontSize:10, color:T.text3, letterSpacing:'0.06em', textTransform:'uppercase' }}>Source: {p.src}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── FINAL CTA ───────────────────────────────────────────── */}
-      <section style={{ maxWidth: 720, margin: '0 auto', padding: '88px 24px', textAlign: 'center' }}>
-        <p style={{ fontFamily: T.body, fontSize: 11, fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', color: T.textAI, marginBottom: 16 }}>
-          FREE ACCESS · NO SIGNUP · NO PAYWALL
-        </p>
-        <h2 style={{ fontFamily: T.display, fontSize: 'clamp(26px, 4vw, 38px)', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.15, color: T.text, marginBottom: 16 }}>
-          Finance professionals who use AI properly are operating at a different level.
+      {/* ── WHO IT'S FOR ────────────────────────────────────── */}
+      <section id="who" style={{ maxWidth:1280, margin:'0 auto', padding:'72px 24px' }}>
+
+        <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:32 }}>
+          <span className="section-label">Built for F&A practitioners</span>
+          <div style={{ flex:1, height:1, background:T.glassBdrHi }} />
+        </div>
+
+        <h2 style={{ fontFamily:T.display, fontSize:'clamp(22px,2.8vw,32px)', fontWeight:800, letterSpacing:'-0.025em', color:T.text1, marginBottom:32 }}>
+          If Finance and Accounting is your work,<br/>this is your platform.
         </h2>
-        <p style={{ fontFamily: T.body, fontSize: 15, color: T.t2, lineHeight: 1.7, marginBottom: 36 }}>
-          Raysho is where that starts. Open the platform now — no account, no paywall, no friction.
-        </p>
-        <Link
-          href="/platform"
-          style={{ padding: '16px 40px', borderRadius: 6, background: T.accent, color: '#fff', fontSize: 16, fontWeight: 700, fontFamily: T.body, display: 'inline-flex', alignItems: 'center', gap: 8 }}
-        >
-          Open Raysho — It&apos;s Free →
-        </Link>
-        <p style={{ fontFamily: T.body, fontSize: 12, color: T.t3, marginTop: 16 }}>
-          Free during launch. No signup required. Content refreshes daily.
-        </p>
+
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(190px,1fr))', gap:8 }}>
+          {WHO.map(role => (
+            <div key={role} className="glass-card" style={{ padding:'12px 16px', display:'flex', alignItems:'center', gap:10 }}>
+              <div style={{ width:5, height:5, borderRadius:'50%', background:T.accent, flexShrink:0 }} />
+              <span style={{ fontFamily:T.body, fontSize:13, color:T.text2 }}>{role}</span>
+            </div>
+          ))}
+        </div>
       </section>
 
-      {/* ── FOOTER ──────────────────────────────────────────────── */}
-      <footer style={{ borderTop: `1px solid ${T.border}`, padding: '32px 24px', background: T.surface }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: 24, marginBottom: 20, flexWrap: 'wrap' }}>
-            <Link href="/terms"   style={{ fontFamily: T.body, fontSize: 12, color: T.t3 }}>Terms of Service</Link>
-            <Link href="/privacy" style={{ fontFamily: T.body, fontSize: 12, color: T.t3 }}>Privacy Policy</Link>
-            <Link href="/platform" style={{ fontFamily: T.body, fontSize: 12, color: T.t3 }}>Platform</Link>
-            <a href="mailto:contact.us@avantage-partners.com" style={{ fontFamily: T.body, fontSize: 12, color: T.t3 }}>Contact</a>
+      <hr className="section-rule" />
+
+      {/* ── FINAL CTA — Liquid Glass ────────────────────────── */}
+      <section style={{ padding:'96px 24px', textAlign:'center' }}>
+        <div style={{ maxWidth:640, margin:'0 auto' }}>
+
+          <div style={{ display:'inline-flex', alignItems:'center', gap:8, fontFamily:T.mono, fontSize:10, fontWeight:500, letterSpacing:'0.12em', textTransform:'uppercase', color:T.textAI, background:T.acDim, border:`1px solid ${T.acBorder}`, borderRadius:3, padding:'4px 14px', marginBottom:28 }}>
+            Free access · No signup · No paywall
           </div>
-          <p style={{ fontFamily: T.body, fontSize: 11, color: T.t3, lineHeight: 1.8, textAlign: 'center', maxWidth: 760, margin: '0 auto' }}>
+
+          <h2 style={{ fontFamily:T.display, fontSize:'clamp(28px,4vw,42px)', fontWeight:800, letterSpacing:'-0.03em', lineHeight:1.1, color:T.text1, marginBottom:16 }}>
+            Finance professionals who use AI properly
+            are operating at a different level.
+          </h2>
+          <p style={{ fontFamily:T.body, fontSize:16, color:T.text2, lineHeight:1.75, marginBottom:36 }}>
+            Raysho is where that starts. Open the platform now —
+            no account, no paywall, no friction.
+          </p>
+
+          <div style={{ display:'flex', gap:12, justifyContent:'center', flexWrap:'wrap' }}>
+            <Link href="/platform" className="btn-primary" style={{ fontSize:16, padding:'14px 36px' }}>
+              Open Raysho — It's Free →
+            </Link>
+            <a href="#pillars" className="btn-ghost" style={{ fontSize:15, padding:'14px 24px' }}>
+              Explore the platform ↓
+            </a>
+          </div>
+
+          <p style={{ fontFamily:T.mono, fontSize:10, color:T.text3, marginTop:20, letterSpacing:'0.06em', textTransform:'uppercase' }}>
+            Free during launch · Content refreshes daily · No signup required
+          </p>
+        </div>
+      </section>
+
+      {/* ── FOOTER ─────────────────────────────────────────── */}
+      <footer style={{ borderTop:`1px solid ${T.glassBdr}`, background:T.raised, padding:'32px 24px' }}>
+        <div style={{ maxWidth:1280, margin:'0 auto' }}>
+          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:16, marginBottom:20 }}>
+            <span style={{ fontFamily:T.display, fontSize:14, fontWeight:700, color:T.text2, letterSpacing:'-0.02em' }}>Raysho</span>
+            <div style={{ display:'flex', gap:20, flexWrap:'wrap' }}>
+              {[['Terms of Service','/terms'],['Privacy Policy','/privacy'],['Platform','/platform'],['contact.us@avantage-partners.com','mailto:contact.us@avantage-partners.com']].map(([l,h]) => (
+                <a key={l} href={h} style={{ fontFamily:T.mono, fontSize:10, letterSpacing:'0.06em', textTransform:'uppercase', color:T.text3, transition:'color 130ms' }}>
+                  {l.includes('@') ? 'Contact' : l}
+                </a>
+              ))}
+            </div>
+          </div>
+          <p style={{ fontFamily:T.body, fontSize:11, color:T.text3, lineHeight:1.8, maxWidth:800 }}>
             Raysho is an independent educational platform. Not affiliated with, endorsed by, or sponsored by Deloitte, EY, PwC, KPMG, McKinsey, Anthropic, OpenAI, Microsoft, Google, or xAI. All trademarks belong to their respective owners. Content is for educational purposes only — not professional financial, accounting, tax, or legal advice. All AI-generated outputs require review by a qualified professional before use.
           </p>
         </div>

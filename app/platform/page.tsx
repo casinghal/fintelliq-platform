@@ -1093,7 +1093,7 @@ function IndustryPrompts({ onNavigate }: { onNavigate: (id: string) => void }) {
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 10 }}>
         <button onClick={() => copyPrompt(openPrompt!.prompt)}
           style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', borderRadius: 7, border: `1px solid ${copied ? C.acbor : C.border}`, background: copied ? C.acdim : C.surface, color: copied ? C.accent : C.t2, fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: F.sans, transition: 'all 0.15s' }}>
-          {copied ? '✓ Copied!' : '⎘ Copy full prompt'}
+          {copied ? '✓ Ready for Claude' : 'Copy for Claude'}
         </button>
       </div>
 
