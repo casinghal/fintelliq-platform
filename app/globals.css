@@ -644,3 +644,68 @@ pre { overflow-x: auto; }
   transition:     color var(--t-fast);
 }
 .footer-link:hover { color: var(--text-2); }
+
+/* ── 3D BUTTONS ─────────────────────────────────────────────── */
+.btn-3d {
+  transform:  perspective(600px) translateZ(0px);
+  transition: transform 130ms ease, box-shadow 130ms ease, background 130ms ease !important;
+  will-change: transform;
+}
+.btn-3d:hover {
+  transform:   perspective(600px) translateZ(10px) scale(1.03) !important;
+}
+.btn-3d:active {
+  transform:   perspective(600px) translateZ(2px) scale(0.98) !important;
+}
+.btn-primary.btn-3d:hover {
+  box-shadow: 0 16px 32px rgba(79,255,176,0.28), 0 4px 12px rgba(0,0,0,0.4) !important;
+}
+.btn-ghost.btn-3d:hover {
+  box-shadow: 0 8px 20px rgba(0,0,0,0.35) !important;
+}
+
+/* ── HOVER GROW — text enlarges on hover ─────────────────────── */
+.hover-grow {
+  transition:  transform 150ms ease, letter-spacing 150ms ease;
+  will-change: transform;
+  cursor:      default;
+}
+.hover-grow:hover {
+  transform: scale(1.06);
+}
+
+/* ── HOVER LIFT — card lifts on hover ───────────────────────── */
+.hover-lift {
+  transition: transform 150ms ease, box-shadow 150ms ease !important;
+  cursor: pointer;
+}
+.hover-lift:hover {
+  transform:  translateY(-3px) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+/* ── NAV LINK override — visible, not faint ─────────────────── */
+.nav-link {
+  font-family:     var(--font-body) !important;
+  font-size:       13px !important;
+  font-weight:     500 !important;
+  letter-spacing:  0 !important;
+  text-transform:  none !important;
+  color:           var(--text-2) !important;
+  transition:      color var(--t-fast), background var(--t-fast) !important;
+  border-radius:   6px;
+  padding:         6px 12px;
+}
+.nav-link:hover {
+  color:      var(--text-1) !important;
+  background: var(--glass-bg) !important;
+}
+
+/* ── FOOTER LINK ─────────────────────────────────────────────── */
+.footer-link {
+  font-family:    var(--font-body);
+  font-size:      12px;
+  color:          var(--text-3);
+  transition:     color var(--t-fast);
+}
+.footer-link:hover { color: var(--text-2); }
