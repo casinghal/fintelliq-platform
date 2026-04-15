@@ -415,7 +415,7 @@ function AutomationLab({ onNavigate }: { onNavigate: (id: string) => void }) {
   const [filterMaturity, setFilterMaturity] = useState('All');
   const [filterEffort, setFilterEffort] = useState('All');
 
-  const TOWERS_LAB = [
+  const TOWERS_LAB: Array<{id: string; label: string; color: string; count: number; soon?: boolean}> = [
     { id: 'AP', label: 'Accounts Payable', color: '#f0b429', count: 10 },
     { id: 'AR', label: 'Accounts Receivable', color: '#10b981', count: 10 },
     { id: 'R2R', label: 'Record to Report', color: '#4a9eff', count: 10 },
@@ -682,7 +682,7 @@ function AutomationLab({ onNavigate }: { onNavigate: (id: string) => void }) {
                         {idea.kpis.map((kpi: typeof idea.kpis[0], ki: number) => (
                           <div key={ki} style={{ padding: '12px 14px', background: C.surface, borderRadius: 8, border: `1px solid ${C.border}` }}>
                             <div style={{ fontSize: 12, fontWeight: 600, color: C.text, marginBottom: 6 }}>{kpi.metric}</div>
-                            <div style={{ display: 'flex', gap: isMobile ? 0 : 20, flexDirection: isMobile ? 'column' : 'row', flexWrap: 'wrap', gap: 8 }}>
+                            <div style={{ display: 'flex', gap: 8, flexDirection: isMobile ? 'column' : 'row', flexWrap: 'wrap' }}>
                               <div style={{ flex: 1, minWidth: 140 }}>
                                 <div style={{ fontSize: 9, fontWeight: 700, color: '#ef4444', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 3 }}>Before</div>
                                 <div style={{ fontSize: 12, color: C.t2 }}>{kpi.before}</div>
@@ -1194,8 +1194,8 @@ function LiveDiscovery({ onNavigate }: { onNavigate: (id: string) => void }) {
       const res = await fetch('/api/discover', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ topic: query }) });
       const data = await res.json();
       if (data.results) setResults(data.results);
-      else { setError('Live discovery unavailable — showing curated examples.'); setResults(DEMO_FEED); }
-    } catch { setError('Live discovery unavailable — showing curated examples.'); setResults(DEMO_FEED); }
+      else { setError('Live discovery is temporarily unavailable. Please try again shortly.'); setResults(null); }
+    } catch { setError('Live discovery is temporarily unavailable. Please try again shortly.'); setResults(null); }
     finally { setLoading(false); }
   };
 
@@ -1324,6 +1324,36 @@ function LiveDiscovery({ onNavigate }: { onNavigate: (id: string) => void }) {
       </div>
 
       <NextSection currentId="feed" onNavigate={onNavigate} />
+    </div>
+  );
+}
+
+function ProcessTowers({ onNavigate }: { onNavigate: (id: string) => void }) {
+  const [activeSection, setActiveSection] = React.useState<string | null>(null);
+  const towerList = [
+    { id: 'AP', label: 'Accounts Payable', color: '#f0b429', prompts: 10 },
+    { id: 'AR', label: 'Accounts Receivable', color: '#10b981', prompts: 10 },
+    { id: 'R2R', label: 'Record to Report', color: '#4a9eff', prompts: 10 },
+    { id: 'TREAS', label: 'Treasury and Cash', color: '#e07b4a', prompts: 10 },
+    { id: 'FPA', label: 'FP&A', color: '#a78bfa', prompts: 10 },
+    { id: 'PAY', label: 'Payroll Processing', color: '#60a5fa', prompts: 10 },
+    { id: 'TAX', label: 'Tax & Compliance', color: '#f0b429', prompts: 10 },
+    { id: 'FA', label: 'Fixed Assets', color: '#ef4444', prompts: 10 },
+  ];
+  return (
+    <div>
+      <SectionBrief sectionId="towers" sectionName="Process Towers" resources={[]} />
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16, marginTop: 24 }}>
+        {towerList.map(tower => (
+          <div key={tower.id} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: 20, cursor: 'pointer' }}
+            onClick={() => onNavigate('lab')}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: tower.color, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 8 }}>{tower.id}</div>
+            <div style={{ fontSize: 15, fontWeight: 600, color: C.text, marginBottom: 8 }}>{tower.label}</div>
+            <div style={{ fontSize: 12, color: C.t2 }}>{tower.prompts} AI prompts</div>
+          </div>
+        ))}
+      </div>
+      <NextSection currentId="towers" onNavigate={onNavigate} />
     </div>
   );
 }
