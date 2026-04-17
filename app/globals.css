@@ -4,7 +4,7 @@ html, body { height: 100%; }
 
 body {
   font-family: 'DM Sans', system-ui, sans-serif;
-  background: #07080c;
+  background: #0D0D0D;
   color: #eef0f4;
   -webkit-font-smoothing: antialiased;
   overscroll-behavior: none;
