@@ -1,0 +1,61 @@
+/* ============================================================
+   D-035 design tokens, scoped to /firms/* subtree.
+   Applied via .firms-scope wrapper in app/firms/layout.tsx.
+   Leaves the v3.0 global system in app/globals.css untouched.
+   ============================================================ */
+
+.firms-scope {
+  /* Colors */
+  --bg: #0A0C12;
+  --surface: #10131B;
+  --accent: #828487;
+  --text-primary: #E8E8E4;
+  --text-muted: rgba(232, 232, 228, 0.65);
+  --line: rgba(255, 255, 255, 0.08);
+  --shadow-card: -12px -12px 24px rgba(255, 255, 255, 0.045),
+                 12px 12px 24px rgba(0, 0, 0, 0.85);
+
+  /* Typography — consume next/font variables exposed by layout.tsx, fall back gracefully */
+  --font-display: var(--font-display-loaded), 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-body:    var(--font-body-loaded),    'Inter',             system-ui, -apple-system, sans-serif;
+  --font-mono:    var(--font-mono-loaded),    'DM Mono',           ui-monospace, 'Courier New', monospace;
+
+  /* Motion */
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+  --easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --easing-emphasis: cubic-bezier(0.3, 0, 0, 1);
+
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+.firms-scope h1,
+.firms-scope h2,
+.firms-scope h3,
+.firms-scope h4,
+.firms-scope h5,
+.firms-scope h6 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+}
+
+.firms-scope code,
+.firms-scope pre,
+.firms-scope .mono {
+  font-family: var(--font-mono);
+}
+
+.firms-scope ::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
