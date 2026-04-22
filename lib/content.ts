@@ -26,6 +26,16 @@ import rehypeStringify from 'rehype-stringify';
 
 const CONTENT_ROOT = path.join(process.cwd(), 'content');
 
+/**
+ * Strip a leading H1 from the markdown body.
+ * Markdown source files start with `# Title`. PageShell already renders
+ * frontmatter.title as H1, so compiling the body H1 would duplicate it.
+ * Safe no-op if the body does not start with H1.
+ */
+function stripLeadingH1(md: string): string {
+  return md.replace(/^#\s+[^\n]+\n+/, '');
+}
+
 export type Section = 'firms' | 'practitioners' | 'intelligence';
 export type Template =
   | 'Playbook'
@@ -188,7 +198,7 @@ async function compileMarkdown(markdown: string): Promise<string> {
     .use(rehypeSlug)
     .use(rehypeAutolinkHeadings, { behavior: 'wrap' })
     .use(rehypeStringify)
-    .process(markdown);
+    .process(stripLeadingH1(markdown));
   return String(file);
 }
 

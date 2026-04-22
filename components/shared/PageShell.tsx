@@ -77,8 +77,10 @@ export function PageShell({ page, children }: PageShellProps) {
           </div>
         </header>
 
-        {/* Body block */}
-        <div className="raysho-prose">{children}</div>
+        {/* Body block — children render without a shared prose wrapper.
+            Playbook template wraps its compiled body in .raysho-prose itself;
+            CrosslinkStrip has its own styles and must stay outside prose. */}
+        {children}
 
         {/* Metadata footer */}
         <footer className="mt-16 pt-8 border-t border-[rgba(255,255,255,0.08)] text-sm text-[rgba(232,232,228,0.65)]">
