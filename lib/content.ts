@@ -33,7 +33,7 @@ const CONTENT_ROOT = path.join(process.cwd(), 'content');
  * Safe no-op if the body does not start with H1.
  */
 function stripLeadingH1(md: string): string {
-  return md.replace(/^#\s+[^\n]+\n+/, '');
+  return md.replace(/^\s*#\s+[^\n]+\n*/, '');
 }
 
 export type Section = 'firms' | 'practitioners' | 'intelligence';
@@ -138,7 +138,9 @@ function parseCrossLink(value: unknown): CrossLink {
   if (trimmed.startsWith('/')) {
     const m2 = trimmed.match(/^(\/\S+?)\s*(?:\((.*)\))?\s*$/);
     if (m2) {
-      return { label: m2[2] || m2[1], href: m2[1], reason: m2[2] };
+      const label = m2[2] || m2[1];
+      const reason = m2[2] && m2[2] !== label ? m2[2] : undefined;
+      return { label, href: m2[1], reason };
     }
   }
   // Fallback: treat the whole string as a label with no resolvable href

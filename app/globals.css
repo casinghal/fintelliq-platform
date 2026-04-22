@@ -1,3 +1,5 @@
+@tailwind utilities;
+
 /* D-035 design tokens — Tier 0 authority per CLAUDE.md v1.9 */
 :root {
   --bg: #0A0C12;
